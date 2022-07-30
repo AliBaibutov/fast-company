@@ -3,6 +3,7 @@ import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
 import SearchStatus from "./searchStatus";
 import User from "./user";
+import PropTypes from "prop-types";
 
 const Users = ({ users, onDelete, onBookmark }) => {
     const count = users.length;
@@ -50,5 +51,11 @@ const Users = ({ users, onDelete, onBookmark }) => {
             />
         </>
     );
+};
+
+Users.propTypes = {
+    users: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onBookmark: PropTypes.func.isRequired
 };
 export default Users;
