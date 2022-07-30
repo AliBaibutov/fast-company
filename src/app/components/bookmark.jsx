@@ -1,19 +1,11 @@
 import React from "react";
 
-const BookMark = ({ status, onBookmark }) => {
-  if (!status) {
+const BookMark = ({ status, onClick }) => {
     return (
-      <button className="btn btn-light btn-sm" onClick={onBookmark}>
-        <i className="bi bi-tags"></i>
-      </button>
+        <button className="btn btn-light btn-sm" onClick={onClick}>
+            <i className={"bi bi-tags" + (status ? "-fill" : "")}></i>
+        </button>
     );
-  } else {
-    return (
-      <button className="btn btn-light btn-sm" onClick={onBookmark}>
-        <i className="bi bi-tags-fill"></i>
-      </button>
-    );
-  }
 };
 
 export default BookMark;
