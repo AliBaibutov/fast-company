@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const BookMark = ({ status, onClick }) => {
     return (
@@ -6,6 +7,10 @@ const BookMark = ({ status, onClick }) => {
             <i className={"bi bi-tags" + (status ? "-fill" : "")}></i>
         </button>
     );
+};
+BookMark.propTypes = {
+    status: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
 export default BookMark;
