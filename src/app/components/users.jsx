@@ -6,7 +6,6 @@ import User from "./user";
 import PropTypes from "prop-types";
 
 const Users = ({ users, onDelete, onBookmark }) => {
-    console.log(users);
     const count = users.length;
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
