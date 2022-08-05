@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import GroupList from "./groupList";
 
 const Users = ({ users, onDelete, onBookmark }) => {
-    const pageSize = 4;
+    const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -26,11 +26,25 @@ const Users = ({ users, onDelete, onBookmark }) => {
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
-    const filteredUsers = selectedProf
-        ? users.filter((user) => user.profession === selectedProf)
-        : users;
+
+    let filteredUsers = null;
+    if (selectedProf) {
+        filteredUsers = users.filter(
+            (user) =>
+                JSON.stringify(user.profession) === JSON.stringify(selectedProf)
+        );
+    } else {
+        filteredUsers = users;
+    }
+
     const count = filteredUsers.length;
-    const userCrop = paginate(filteredUsers, currentPage, pageSize);
+    const startIndex = (currentPage - 1) * pageSize;
+    let newCurrentPage = currentPage;
+    if (startIndex >= filteredUsers.length) {
+        newCurrentPage = newCurrentPage - 1;
+        setCurrentPage(newCurrentPage);
+    }
+    const userCrop = paginate(filteredUsers, newCurrentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
     };
@@ -82,7 +96,7 @@ const Users = ({ users, onDelete, onBookmark }) => {
                     <Pagination
                         itemsCount={count}
                         pageSize={pageSize}
-                        currentPage={currentPage}
+                        currentPage={newCurrentPage}
                         onPageChange={handlePageChange}
                     />
                 </div>
