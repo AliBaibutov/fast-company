@@ -40,7 +40,6 @@ const Users = ({ users, onDelete, onBookmark }) => {
     let newCurrentPage = currentPage;
     if (startIndex === filteredUsers.length) {
         newCurrentPage = newCurrentPage - 1;
-        console.log(startIndex, filteredUsers.length);
         setCurrentPage(newCurrentPage);
     }
     const userCrop = paginate(filteredUsers, newCurrentPage, pageSize);
