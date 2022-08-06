@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import GroupList from "./groupList";
 
 const Users = ({ users, onDelete, onBookmark }) => {
-    const pageSize = 2;
+    const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -27,21 +27,20 @@ const Users = ({ users, onDelete, onBookmark }) => {
         setSelectedProf(item);
     };
 
-    let filteredUsers = null;
-    if (selectedProf) {
-        filteredUsers = users.filter(
-            (user) =>
-                JSON.stringify(user.profession) === JSON.stringify(selectedProf)
-        );
-    } else {
-        filteredUsers = users;
-    }
+    const filteredUsers = selectedProf
+        ? users.filter(
+              (user) =>
+                  JSON.stringify(user.profession) ===
+                  JSON.stringify(selectedProf)
+          )
+        : users;
 
     const count = filteredUsers.length;
     const startIndex = (currentPage - 1) * pageSize;
     let newCurrentPage = currentPage;
-    if (startIndex >= filteredUsers.length) {
+    if (startIndex === filteredUsers.length) {
         newCurrentPage = newCurrentPage - 1;
+        console.log(startIndex, filteredUsers.length);
         setCurrentPage(newCurrentPage);
     }
     const userCrop = paginate(filteredUsers, newCurrentPage, pageSize);
