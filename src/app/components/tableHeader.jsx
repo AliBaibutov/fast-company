@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
+        console.log(selectedSort);
+        console.log(item);
         if (selectedSort.path === item) {
             onSort({
                 ...selectedSort,
@@ -29,17 +31,13 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         {columns[column].name}
 
                         <i
-                            onClick={
-                                columns[column].path
-                                    ? () => handleSort(columns[column].path)
-                                    : undefined
-                            }
-                            {...{ role: columns[column].path && "button" }}
                             className={
+                                columns[column].path &&
                                 columns[column].path === selectedSort.path &&
                                 selectedSort.order === "asc"
                                     ? "bi bi-caret-up-fill"
-                                    : columns[column].path ===
+                                    : columns[column].path &&
+                                      columns[column].path ===
                                           selectedSort.path &&
                                       selectedSort.order === "desc"
                                     ? "bi bi-caret-down-fill"
