@@ -13,7 +13,7 @@ const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
 
     const [users, setUsers] = useState();
     useEffect(() => {
@@ -114,12 +114,12 @@ const Users = () => {
             </div>
         );
     }
-    return "loading";
+    return "loading...";
 };
 
 Users.propTypes = {
-    users: PropTypes.array.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onBookmark: PropTypes.func.isRequired
+    users: PropTypes.array,
+    onDelete: PropTypes.func,
+    onBookmark: PropTypes.func
 };
 export default Users;
