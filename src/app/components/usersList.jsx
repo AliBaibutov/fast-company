@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import _ from "lodash";
 
-const Users = () => {
+const UsersList = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -117,9 +117,9 @@ const Users = () => {
     return "loading...";
 };
 
-Users.propTypes = {
+UsersList.propTypes = {
     users: PropTypes.array,
     onDelete: PropTypes.func,
     onBookmark: PropTypes.func
 };
-export default Users;
+export default UsersList;
