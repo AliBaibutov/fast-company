@@ -7,6 +7,7 @@ import api from "../api";
 import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import _ from "lodash";
+import Search from "./search";
 
 const UsersList = () => {
     const pageSize = 8;
@@ -14,8 +15,9 @@ const UsersList = () => {
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-
     const [users, setUsers] = useState();
+    const [searchText, setSearchText] = useState("");
+
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -48,6 +50,12 @@ const UsersList = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setSearchText("");
+    };
+
+    const handleChange = ({ target }) => {
+        setSearchText(target.value);
+        setSelectedProf();
     };
 
     if (users) {
@@ -57,7 +65,11 @@ const UsersList = () => {
                       JSON.stringify(user.profession) ===
                       JSON.stringify(selectedProf)
               )
-            : users;
+            : users.filter((user) => {
+                  return user.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase());
+              });
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
             filteredUsers,
@@ -93,6 +105,7 @@ const UsersList = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <Search value={searchText} onChange={handleChange} />
                     {count > 0 && (
                         <UserTable
                             users={userCrop}
