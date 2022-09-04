@@ -23,6 +23,7 @@ module.exports = {
                 asyncArrow: "never"
             }
         ],
+        "multiline-ternary": ["off"],
         quotes: ["error", "double", { allowTemplateLiterals: true }]
     }
 };
