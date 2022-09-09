@@ -38,6 +38,7 @@ const RegisterForm = () => {
     }, []);
 
     const handleChange = (target) => {
+        console.log(target);
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
@@ -114,12 +115,15 @@ const RegisterForm = () => {
         const isValid = validate();
         if (!isValid) return;
         const { profession, qualities } = data;
+
+        console.log(data);
         console.log({
             ...data,
             profession: getProfessionById(profession),
             qualities: getQualities(qualities)
         });
     };
+    console.log(professions, qualities);
     return (
         <form onSubmit={handleSubmit}>
             <TextField

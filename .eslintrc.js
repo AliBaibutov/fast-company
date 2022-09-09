@@ -11,7 +11,7 @@ module.exports = {
         ecmaVersion: "latest",
         sourceType: "module"
     },
-    plugins: ["react"],
+    plugins: ["react", "react-hooks"],
     rules: {
         indent: "off",
         semi: [2, "always"],

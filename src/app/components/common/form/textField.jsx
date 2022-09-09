@@ -5,6 +5,7 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = ({ target }) => {
+        console.log(target);
         onChange({ name: target.name, value: target.value });
     };
     const getInputClasses = () => {
@@ -53,6 +54,7 @@ TextField.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
+    defaultValue: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string
 };
