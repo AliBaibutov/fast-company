@@ -79,7 +79,6 @@ const ChangeUserForm = () => {
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
         const { profession, qualities } = data;
-        console.log(qualities);
         const getProfArg =
             typeof profession === "string" ? profession : profession._id;
         const getQualArg = qualities[0]._id ? defaultQualities : qualities;
