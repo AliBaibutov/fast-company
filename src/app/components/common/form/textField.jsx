@@ -53,6 +53,7 @@ TextField.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
+    defaultValue: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string
 };
