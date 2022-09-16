@@ -61,6 +61,9 @@ const EditUserPage = () => {
             qualities: getQualities(qualities)
         });
     };
+    const handleClick = () => {
+        history.push(`/users/${data._id}`);
+    };
     const transformData = (data) => {
         return data.map((qual) => ({ label: qual.name, value: qual._id }));
     };
@@ -126,6 +129,10 @@ const EditUserPage = () => {
     const isValid = Object.keys(errors).length === 0;
     return (
         <div className="container mt-5">
+            <button className="btn btn-primary" onClick={handleClick}>
+                <i className="bi bi-caret-left"></i>
+                Назад
+            </button>
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
                     {!isLoading && Object.keys(professions).length > 0 ? (
