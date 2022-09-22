@@ -5,18 +5,33 @@ import { useHistory } from "react-router-dom";
 import UserCard from "./userCard";
 import QualitiesCard from "./qualitiesCard";
 import MeetingsCard from "./meetingsCard";
-import CommentsListComponent from "./commentsListComponent";
+// import CommentsListComponent from "./commentsListComponent";
+import AddCommentForm from "./addCommentForm";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
+    const [users, setUsers] = useState();
     const [user, setUser] = useState();
+
+    useEffect(() => {
+        api.users.fetchAll().then((data) => {
+            const usersList = data.map((user) => ({
+                label: user.name,
+                value: user._id
+            }));
+            setUsers(usersList);
+        });
+    }, []);
     useEffect(() => {
         api.users.getById(userId).then((data) => setUser(data));
     }, []);
+
     const handleClick = () => {
         history.push(history.location.pathname + "/edit");
     };
-    if (user) {
+
+    // console.log(commentForUser);
+    if (user && users) {
         return (
             <div className="container">
                 <div className="row gutters-sm">
@@ -26,7 +41,7 @@ const UserPage = ({ userId }) => {
                         <MeetingsCard user={user} />
                     </div>
                     <div className="col-md-8">
-                        <CommentsListComponent />
+                        <AddCommentForm users={users} userId={userId} />
                     </div>
                 </div>
             </div>
