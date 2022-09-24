@@ -43,17 +43,14 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
         </div>
     );
 };
-
 TextField.defaultProps = {
     type: "text"
 };
-
 TextField.propTypes = {
     label: PropTypes.string,
     type: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
-    defaultValue: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string
 };

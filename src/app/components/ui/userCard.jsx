@@ -1,13 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-const UserCard = ({ onClick, user }) => {
+import { useHistory } from "react-router-dom";
+const UserCard = ({ user }) => {
+    const history = useHistory();
+    const handleClick = () => {
+        history.push(history.location.pathname + "/edit");
+    };
     return (
         <div className="card mb-3">
             <div className="card-body">
                 <button
                     className="position-absolute top-0 end-0 btn btn-light btn-sm"
-                    onClick={onClick}
+                    onClick={handleClick}
                 >
                     <i className="bi bi-gear"></i>
                 </button>
@@ -18,10 +22,8 @@ const UserCard = ({ onClick, user }) => {
                         )
                             .toString(36)
                             .substring(7)}.svg`}
-                        className="rounded-circle shadow-1-strong me-3"
-                        alt="avatar"
-                        width="65"
-                        height="65"
+                        className="rounded-circle"
+                        width="150"
                     />
                     <div className="mt-3">
                         <h4>{user.name}</h4>
@@ -45,9 +47,7 @@ const UserCard = ({ onClick, user }) => {
         </div>
     );
 };
-
 UserCard.propTypes = {
-    onClick: PropTypes.func,
     user: PropTypes.object
 };
 
