@@ -7,6 +7,7 @@ import api from "../../../api";
 import PropTypes from "prop-types";
 import GroupList from "../../common/groupList";
 import _ from "lodash";
+import { useUser } from "../../../hooks/useUsers";
 
 const UsersListPage = () => {
     const pageSize = 8;
@@ -14,14 +15,14 @@ const UsersListPage = () => {
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const [users, setUsers] = useState();
     const [searchQuery, setSearchQuery] = useState("");
 
-    useEffect(() => {
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
+    const { users } = useUser();
+    console.log(users);
+
     const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId));
+        // setUsers(users.filter((user) => user._id !== userId));
+        console.log(userId);
     };
     const handleToggleBookMark = (id) => {
         const newArray = users.map((user) => {
@@ -30,7 +31,8 @@ const UsersListPage = () => {
             }
             return user;
         });
-        setUsers(newArray);
+        // setUsers(newArray);
+        console.log(newArray);
     };
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
