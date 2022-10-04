@@ -15,14 +15,16 @@ export const ProfessionProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        getProfessionsList();
-    }, []);
-    useEffect(() => {
         if (error !== null) {
             toast(error);
             setError(null);
         }
     }, [error]);
+
+    useEffect(() => {
+        getProfessionsList();
+    }, []);
+
     function getProfession(id) {
         return professions.find((p) => p._id === id);
     }
@@ -40,6 +42,7 @@ export const ProfessionProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
+    console.log(professions);
 
     return (
         <ProfessionContext.Provider

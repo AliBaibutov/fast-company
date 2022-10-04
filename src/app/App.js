@@ -12,8 +12,8 @@ function App() {
     return (
         <>
             <NavBar />
-            <ProfessionProvider>
-                <QualitiesProvider>
+            <QualitiesProvider>
+                <ProfessionProvider>
                     <Switch>
                         <Route
                             path="/users/:userId?/:edit?"
@@ -23,8 +23,8 @@ function App() {
                         <Route path="/" component={Main} />
                         <Redirect to="/" />
                     </Switch>
-                </QualitiesProvider>
-            </ProfessionProvider>
+                </ProfessionProvider>
+            </QualitiesProvider>
             <ToastContainer />
         </>
     );
