@@ -29,7 +29,6 @@ const AuthProvider = ({ children }) => {
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
-            console.log(code, message);
             if (code === 400) {
                 if (message === "EMAIL_EXISTS") {
                     const errorObject = {
@@ -38,7 +37,28 @@ const AuthProvider = ({ children }) => {
                     throw errorObject;
                 }
             }
-            // throw new Error
+        }
+    }
+    async function signIn({ email, password }) {
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+        try {
+            const { data } = await httpAuth.post(url, {
+                email,
+                password,
+                returnSecureToken: true
+            });
+            setTokens(data);
+        } catch (error) {
+            errorCatcher(error);
+            const { code, message } = error.response.data.error;
+            if (code === 400) {
+                if (message === "EMAIL_NOT_FOUND") {
+                    const errorObject = {
+                        email: "Пользователя с таким Email не существует"
+                    };
+                    throw errorObject;
+                }
+            }
         }
     }
     async function createUser(data) {
@@ -60,7 +80,7 @@ const AuthProvider = ({ children }) => {
         }
     }, [error]);
     return (
-        <AuthContext.Provider value={{ signUp, currentUser }}>
+        <AuthContext.Provider value={{ signUp, signIn, currentUser }}>
             {children}
         </AuthContext.Provider>
     );
