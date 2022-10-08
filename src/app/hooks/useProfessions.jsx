@@ -42,7 +42,6 @@ export const ProfessionProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
-    console.log(professions);
 
     return (
         <ProfessionContext.Provider
