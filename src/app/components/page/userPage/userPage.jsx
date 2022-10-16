@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import UserCard from "../../ui/userCard";
 import QualitiesCard from "../../ui/qualitiesCard";
@@ -6,10 +6,15 @@ import MeetingsCard from "../../ui/meetingsCard";
 import Comments from "../../ui/comments";
 import { useUser } from "../../../hooks/useUsers";
 import { CommentsProvider } from "../../../hooks/useComments";
+import { useAuth } from "../../../hooks/useAuth";
 
 const UserPage = ({ userId }) => {
     const { getUserById } = useUser();
-    const user = getUserById(userId);
+    const { currentUser } = useAuth();
+    const [user, setUser] = useState(getUserById(userId));
+    useEffect(() => {
+        setUser(getUserById(userId));
+    }, [currentUser, userId]);
     if (user) {
         return (
             <div className="container">
