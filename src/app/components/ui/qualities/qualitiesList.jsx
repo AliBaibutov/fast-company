@@ -6,7 +6,13 @@ import { useQualities } from "../../../hooks/useQualities";
 const QualitiesList = ({ qualities }) => {
     const { isLoading } = useQualities();
     if (isLoading) return "loading...";
-    return qualities.map((qual) => <Quality key={qual} id={qual} />);
+    return qualities.map((qual) =>
+        typeof qual === "string" ? (
+            <Quality key={qual} id={qual} />
+        ) : (
+            <Quality key={qual.value} id={qual.value} />
+        )
+    );
 };
 
 QualitiesList.propTypes = {
