@@ -6,13 +6,13 @@ import UserTable from "../../ui/userTable";
 import PropTypes from "prop-types";
 import GroupList from "../../common/groupList";
 import _ from "lodash";
-import { useUser } from "../../../hooks/useUsers";
 import { useProfessions } from "../../../hooks/useProfessions";
-import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { getCurrentUserId, getUsersList } from "../../../store/users";
 
 const UsersListPage = () => {
-    const { users } = useUser();
-    const { currentUser } = useAuth();
+    const users = useSelector(getUsersList());
+    const currentUserId = useSelector(getCurrentUserId());
     const { isLoading: professionsLoading, professions } = useProfessions;
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +66,7 @@ const UsersListPage = () => {
                       JSON.stringify(selectedProf)
               )
             : data;
-        return filteredUsers.filter((u) => u._id !== currentUser._id);
+        return filteredUsers.filter((u) => u._id !== currentUserId);
     }
     const filteredUsers = filterUsers(users);
     const count = filteredUsers.length;
