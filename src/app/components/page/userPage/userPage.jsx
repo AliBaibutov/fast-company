@@ -6,27 +6,27 @@ import MeetingsCard from "../../ui/meetingsCard";
 import Comments from "../../ui/comments";
 import { useSelector } from "react-redux";
 import { getUserById } from "../../../store/users";
+import { CommentsProvider } from "../../../hooks/useComments";
 
 const UserPage = ({ userId }) => {
     const user = useSelector(getUserById(userId));
-    if (user) {
-        return (
-            <div className="container">
-                <div className="row gutters-sm">
-                    <div className="col-md-4 mb-3">
-                        <UserCard user={user} />
-                        <QualitiesCard data={user.qualities} />
-                        <MeetingsCard value={user.completedMeetings} />
-                    </div>
-                    <div className="col-md-8">
+    return (
+        <div className="container">
+            <div className="row gutters-sm">
+                <div className="col-md-4 mb-3">
+                    <UserCard user={user} />
+                    <div>{user.profession.name}</div>
+                    <QualitiesCard data={user.qualities} />
+                    <MeetingsCard value={user.completedMeetings} />
+                </div>
+                <div className="col-md-8">
+                    <CommentsProvider>
                         <Comments />
-                    </div>
+                    </CommentsProvider>
                 </div>
             </div>
-        );
-    } else {
-        return <h1>Loading</h1>;
-    }
+        </div>
+    );
 };
 
 UserPage.propTypes = {
