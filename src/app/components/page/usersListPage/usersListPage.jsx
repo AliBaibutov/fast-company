@@ -6,14 +6,18 @@ import UserTable from "../../ui/userTable";
 import PropTypes from "prop-types";
 import GroupList from "../../common/groupList";
 import _ from "lodash";
-import { useProfessions } from "../../../hooks/useProfessions";
 import { useSelector } from "react-redux";
 import { getCurrentUserId, getUsersList } from "../../../store/users";
+import {
+    getProfessions,
+    getProfessionsLoadingStatus
+} from "../../../store/professions";
 
 const UsersListPage = () => {
     const users = useSelector(getUsersList());
     const currentUserId = useSelector(getCurrentUserId());
-    const { isLoading: professionsLoading, professions } = useProfessions;
+    const professions = useSelector(getProfessions());
+    const professionsLoading = useSelector(getProfessionsLoadingStatus());
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProf, setSelectedProf] = useState();
