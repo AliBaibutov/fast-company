@@ -49,7 +49,7 @@ export function validator(data, config) {
             }
         }
     }
-    if (!Object.keys(data).length) {
+    if (data && !Object.keys(data).length) {
         errors.content = "Сообщение не может быть пустым";
     }
     return errors;
