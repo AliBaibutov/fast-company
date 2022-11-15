@@ -6,14 +6,12 @@ import {
     createComment,
     getComments,
     getCommentsLoadingStatus,
-    loadCommentsList
+    loadCommentsList,
+    removeComment
 } from "../../store/comments";
 import { useParams } from "react-router-dom";
-import { nanoid } from "nanoid";
-import { getCurrentUserId } from "../../store/users";
 
 const Comments = () => {
-    const currentUserId = useSelector(getCurrentUserId());
     const { userId } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -22,15 +20,10 @@ const Comments = () => {
     const isLoading = useSelector(getCommentsLoadingStatus());
     const comments = useSelector(getComments());
     const handleSubmit = (data) => {
-        dispatch(
-            createComment({
-                ...data,
-                _id: nanoid(),
-                pageId: userId,
-                created_at: Date.now(),
-                userId: currentUserId
-            })
-        );
+        dispatch(createComment({ ...data, pageId: userId }));
+    };
+    const handleRemoveComment = (id) => {
+        dispatch(removeComment(id));
     };
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (
@@ -46,7 +39,10 @@ const Comments = () => {
                         <h2>Comments</h2>
                         <hr />
                         {!isLoading ? (
-                            <CommentsList comments={sortedComments} />
+                            <CommentsList
+                                comments={sortedComments}
+                                onRemove={handleRemoveComment}
+                            />
                         ) : (
                             "Loading..."
                         )}

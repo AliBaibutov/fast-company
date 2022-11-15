@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import BookMark from "../common/bookmark";
+// import BookMark from "../common/bookmark";
 import Qualities from "./qualities";
 import Table from "../common/table";
 import { Link } from "react-router-dom";
 import Profession from "./profession";
 
-const UserTable = ({ users, onSort, selectedSort, onBookmark }) => {
+// const UserTable = ({ users, onSort, selectedSort, onBookmark }) => {
+const UserTable = ({ users, onSort, selectedSort }) => {
     const columns = {
         name: {
             path: "name",
@@ -27,17 +28,17 @@ const UserTable = ({ users, onSort, selectedSort, onBookmark }) => {
             path: "completedMeetings",
             name: "Встретился, раз"
         },
-        rate: { path: "rate", name: "Оценка" },
-        bookmark: {
-            path: "bookmark",
-            name: "Избранное",
-            component: (user) => (
-                <BookMark
-                    status={user.bookmark}
-                    onClick={() => onBookmark(user._id)}
-                />
-            )
-        }
+        rate: { path: "rate", name: "Оценка" }
+        // bookmark: {
+        //     path: "bookmark",
+        //     name: "Избранное",
+        //     component: (user) => (
+        //         <BookMark
+        //             status={user.bookmark}
+        //             onClick={() => onBookmark(user._id)}
+        //         />
+        //     )
+        // }
     };
     return (
         <Table
@@ -51,7 +52,7 @@ const UserTable = ({ users, onSort, selectedSort, onBookmark }) => {
 
 UserTable.propTypes = {
     users: PropTypes.array.isRequired,
-    onBookmark: PropTypes.func.isRequired,
+    // onBookmark: PropTypes.func.isRequired,
     onSort: PropTypes.func.isRequired,
     selectedSort: PropTypes.object.isRequired
 };

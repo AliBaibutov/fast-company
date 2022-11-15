@@ -36,6 +36,7 @@ export function validator(data, config) {
         }
         if (statusValidate) return config.message;
     }
+
     for (const fieldName in data) {
         for (const validateMethod in config[fieldName]) {
             const error = validate(
@@ -47,6 +48,9 @@ export function validator(data, config) {
                 errors[fieldName] = error;
             }
         }
+    }
+    if (!Object.keys(data).length) {
+        errors.content = "Сообщение не может быть пустым";
     }
     return errors;
 }

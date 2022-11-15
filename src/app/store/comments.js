@@ -1,5 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 import commentService from "../services/comment.service";
+import { getCurrentUserId } from "./users";
 
 const commentsSlice = createSlice({
     name: "comments",
@@ -24,7 +26,9 @@ const commentsSlice = createSlice({
             if (!Array.isArray(state.entities)) {
                 state.entities = [];
             }
-            state.entities = action.payload;
+            state.entities = state.entities.filter(
+                (c) => c._id !== action.payload
+            );
         },
         commentCreated: (state, action) => {
             if (!Array.isArray(state.entities)) {
@@ -44,6 +48,9 @@ const {
     commentCreated
 } = actions;
 
+const addCommentRequested = createAction("comments/addCommentRequested");
+const removeCommentRequested = createAction("comments/removeCommentRequested");
+
 export const loadCommentsList = (userId) => async (dispatch) => {
     dispatch(commentsRequested());
     try {
@@ -53,23 +60,28 @@ export const loadCommentsList = (userId) => async (dispatch) => {
         dispatch(commentsRequestFailed(error.message));
     }
 };
-export const removeComment = (commentId) => async (dispatch, getState) => {
+export const removeComment = (commentId) => async (dispatch) => {
+    dispatch(removeCommentRequested());
     try {
         const { content } = await commentService.removeComment(commentId);
-        const state = getState();
         if (content === null) {
-            const updateCommentsList = state.comments.entities.filter(
-                (c) => c._id !== commentId
-            );
-            dispatch(commentRemoved(updateCommentsList));
+            dispatch(commentRemoved(commentId));
         }
     } catch (error) {
         dispatch(commentsRequestFailed(error.message));
     }
 };
-export const createComment = (payload) => async (dispatch) => {
+
+export const createComment = (payload) => async (dispatch, getState) => {
+    dispatch(addCommentRequested(payload));
+    const comment = {
+        ...payload,
+        _id: nanoid(),
+        created_at: Date.now(),
+        userId: getCurrentUserId()(getState())
+    };
     try {
-        const { content } = await commentService.createComment(payload);
+        const { content } = await commentService.createComment(comment);
         dispatch(commentCreated(content));
     } catch (error) {
         dispatch(commentsRequestFailed(error.message));

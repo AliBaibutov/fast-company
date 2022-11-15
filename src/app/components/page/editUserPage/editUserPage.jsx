@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { validator } from "../../../utils/validator";
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
@@ -19,7 +18,6 @@ import {
 
 const EditUserPage = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState();
     const currentUser = useSelector(getCurrentUserData());
@@ -47,7 +45,6 @@ const EditUserPage = () => {
                 qualities: data.qualities.map((q) => q.value)
             })
         );
-        history.push(`/users/${currentUser._id}`);
     };
     function getQualitiesListByIds(qualitiesIds) {
         const qualitiesArray = [];

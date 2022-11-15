@@ -13,8 +13,7 @@ const initialState = localStorageService.getAccessToken()
           error: null,
           auth: { userId: localStorageService.getUserId() },
           isLoggedIn: true,
-          dataLoaded: false,
-          dataUpdated: false
+          dataLoaded: false
       }
     : {
           entities: null,
@@ -22,8 +21,7 @@ const initialState = localStorageService.getAccessToken()
           error: null,
           auth: null,
           isLoggedIn: false,
-          dataLoaded: false,
-          dataUpdated: false
+          dataLoaded: false
       };
 
 const usersSlice = createSlice({
@@ -56,18 +54,9 @@ const usersSlice = createSlice({
             state.entities.push(action.payload);
         },
         userUpdated: (state, action) => {
-            console.log(action);
-            state.entities.map((u) => {
-                if (u._id === action.payload._id) {
-                    return action.payload;
-                }
-                return u;
-            });
-            if (!state.dataUpdated) {
-                state.dataUpdated = true;
-            } else {
-                state.dataUpdated = false;
-            }
+            state.entities[
+                state.entities.findIndex((u) => u._id === action.payload._id)
+            ] = action.payload;
         },
         userLoggedOut: (state) => {
             state.entities = null;
@@ -97,7 +86,7 @@ const {
 const userCreateRequested = createAction("users/userCreateRequested");
 const createUserFailed = createAction("users/createUserFailed");
 const userUpdateRequested = createAction("users/userUpdateRequested");
-const updateUserFailed = createAction("users/updateUserFailed");
+const userUpdateFailed = createAction("users/userUpdateFailed");
 
 export const logIn =
     ({ payload, redirect }) =>
@@ -167,8 +156,9 @@ export const updateUser = (payload) => async (dispatch) => {
     try {
         const { content } = await userService.update(payload);
         dispatch(userUpdated(content));
+        history.push(`/users/${content._id}`);
     } catch (error) {
-        dispatch(updateUserFailed(error.message));
+        dispatch(userUpdateFailed(error.message));
     }
 };
 export const loadUsersList = () => async (dispatch, getState) => {

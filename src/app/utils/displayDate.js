@@ -16,7 +16,13 @@ export function displayDate(data) {
                 }
                 return "30 минут назад";
             }
-            return `${date.getHours()}:${date.getMinutes()}`;
+            const hours =
+                date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            const minutes =
+                date.getMinutes() < 10
+                    ? "0" + date.getMinutes()
+                    : date.getMinutes();
+            return `${hours}:${minutes}`;
         }
 
         return `${date.getDate()} ${date.toLocaleString("default", {
@@ -24,6 +30,6 @@ export function displayDate(data) {
         })}`;
     }
     return (
-        date.getFullYear() + "." + (date.getMonth() + 1) + "_" + date.getDate()
+        date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear()
     );
 }

@@ -1,16 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { displayDate } from "../../../utils/displayDate";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getCurrentUserId, getUserById } from "../../../store/users";
-import { removeComment } from "../../../store/comments";
-const Comment = ({ content, created_at: created, _id: id, userId }) => {
-    const dispatch = useDispatch();
+const Comment = ({
+    content,
+    created_at: created,
+    _id: id,
+    userId,
+    onRemove
+}) => {
     const currentUserId = useSelector(getCurrentUserId());
     const user = useSelector(getUserById(userId));
-    const handleRemoveComment = (id) => {
-        dispatch(removeComment(id));
-    };
 
     return (
         <div className="bg-light card-body  mb-3">
@@ -36,9 +37,7 @@ const Comment = ({ content, created_at: created, _id: id, userId }) => {
                                     {currentUserId === userId && (
                                         <button
                                             className="btn btn-sm text-primary d-flex align-items-center"
-                                            onClick={() =>
-                                                handleRemoveComment(id)
-                                            }
+                                            onClick={() => onRemove(id)}
                                         >
                                             <i className="bi bi-x-lg"></i>
                                         </button>
@@ -55,6 +54,7 @@ const Comment = ({ content, created_at: created, _id: id, userId }) => {
 };
 Comment.propTypes = {
     content: PropTypes.string,
+    onRemove: PropTypes.func,
     edited_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     userId: PropTypes.string,
