@@ -3,7 +3,6 @@ import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
 import userService from "../services/user.service";
 import { generateAuthError } from "../utils/generateAuthError";
-import getRandomInt from "../utils/getRandomInt";
 import history from "../utils/history";
 
 const initialState = localStorageService.getAccessToken()
@@ -77,14 +76,11 @@ const {
     usersRequestFailed,
     authRequestSuccess,
     authRequestFailed,
-    userCreated,
     userLoggedOut,
     authRequested,
     userUpdated
 } = actions;
 
-const userCreateRequested = createAction("users/userCreateRequested");
-const createUserFailed = createAction("users/createUserFailed");
 const userUpdateRequested = createAction("users/userUpdateRequested");
 const userUpdateFailed = createAction("users/userUpdateFailed");
 
@@ -95,8 +91,8 @@ export const logIn =
         dispatch(authRequested());
         try {
             const data = await authService.login({ email, password });
-            dispatch(authRequestSuccess({ userId: data.localId }));
             localStorageService.setTokens(data);
+            dispatch(authRequestSuccess({ userId: data.userId }));
             history.push(redirect);
         } catch (error) {
             const { code, message } = error.response.data.error;
@@ -108,49 +104,25 @@ export const logIn =
             }
         }
     };
-export const signUp =
-    ({ email, password, ...rest }) =>
-    async (dispatch) => {
-        dispatch(authRequested());
-        try {
-            const data = await authService.register({ email, password });
-            localStorageService.setTokens(data);
-            dispatch(authRequestSuccess({ userId: data.localId }));
-            dispatch(
-                createUser({
-                    _id: data.localId,
-                    email,
-                    rate: getRandomInt(1, 5),
-                    completedMeetings: getRandomInt(0, 200),
-                    image: `https://avatars.dicebear.com/api/avataaars/${(
-                        Math.random() + 1
-                    )
-                        .toString(36)
-                        .substring(7)}.svg`,
-                    ...rest
-                })
-            );
-        } catch (error) {
-            dispatch(authRequestFailed(error.message));
-        }
-    };
+
+export const signUp = (payload) => async (dispatch) => {
+    dispatch(authRequested());
+    try {
+        const data = await authService.register(payload);
+        localStorageService.setTokens(data);
+        dispatch(authRequestSuccess({ userId: data.userId }));
+        history.push("/users");
+    } catch (error) {
+        dispatch(authRequestFailed(error.message));
+    }
+};
+
 export const logOut = () => (dispatch) => {
     localStorageService.removeAuthData();
     dispatch(userLoggedOut());
     history.push("/");
 };
-function createUser(payload) {
-    return async function (dispatch) {
-        dispatch(userCreateRequested());
-        try {
-            const { content } = await userService.create(payload);
-            dispatch(userCreated(content));
-            history.push("/users");
-        } catch (error) {
-            dispatch(createUserFailed(error.message));
-        }
-    };
-}
+
 export const updateUser = (payload) => async (dispatch) => {
     dispatch(userUpdateRequested());
     try {
@@ -161,6 +133,7 @@ export const updateUser = (payload) => async (dispatch) => {
         dispatch(userUpdateFailed(error.message));
     }
 };
+
 export const loadUsersList = () => async (dispatch, getState) => {
     dispatch(usersRequested());
     try {
@@ -170,11 +143,13 @@ export const loadUsersList = () => async (dispatch, getState) => {
         dispatch(usersRequestFailed(error.message));
     }
 };
+
 export const getUserById = (userId) => (state) => {
     if (state.users.entities) {
         return state.users.entities.find((u) => u._id === userId);
     }
 };
+
 export const getUsersList = () => (state) => state.users.entities;
 export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
 export const getDataStatus = () => (state) => state.users.dataLoaded;
